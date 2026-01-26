@@ -1,28 +1,28 @@
 export interface Character {
-  _id: string;
+  id: number;
   name: string;
   normalized_name: string;
   avatar: string;
+  _id?: string;
 }
 
 export interface Episode {
-  _id: string;
   id: number;
   name: string;
   season: number;
-  number_in_season: number;
-  number_in_series: number;
-  original_air_date: string;
-  production_code: string;
-  image_url: string;
-  video_url: string;
+  episode: number;
+  rating: string;
+  originalAirDate: string;
+  thumbnailUrl: string;
+  _id?: string;
 }
 
 export interface Location {
-  _id: string;
-  name: string;
-  normalized_name: string;
+  id: number;
+  title: string;
+  description: string;
   image: string;
+  _id?: string;
 }
 
 export interface ApiResponse<T> {
