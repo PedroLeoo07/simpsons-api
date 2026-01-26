@@ -10,6 +10,30 @@ interface CharacterListProps {
   removeFromFavorites: (id: string) => void;
 }
 
+// Mapeamento de imagens reais dos personagens dos Simpsons
+const characterImages: { [key: string]: string } = {
+  'homer simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/HomerSimpson.png',
+  'marge simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MargeSimpson.png',
+  'bart simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/BartSimpson.png',
+  'lisa simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/LisaSimpson.png',
+  'maggie simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MaggieSimpson.png',
+  'ned flanders': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/NedFlanders.png',
+  'moe szyslak': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MoeSzyslak.png',
+  'barney gumble': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/BarneyGumble.png',
+  'krusty the clown': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/KrustyTheClown.png',
+  'chief wiggum': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ChiefWiggum.png',
+  'apu nahasapeemapetilon': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ApuNahasapeemapetilon.png',
+  'comic book guy': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ComicBookGuy.png',
+  'milhouse van houten': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MilhouseVanHouten.png',
+  'nelson muntz': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/NelsonMuntz.png',
+  'ralph wiggum': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/RalphWiggum.png',
+};
+
+function getCharacterImage(name: string): string {
+  const normalized = name.toLowerCase().trim();
+  return characterImages[normalized] || `https://joeschmoe.io/api/v1/random?name=${encodeURIComponent(name)}`;
+}
+
 export default function CharacterList({ addToFavorites, isFavorite, removeFromFavorites }: CharacterListProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -38,7 +62,8 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
 
       <div className="grid">
         {data.map((character) => {
-          const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(character.name)}&backgroundColor=ffd700,ff6b00,00d4ff&radius=50`;
+          const avatarUrl = getCharacterImage(character.name);
+          const fallbackUrl = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}&backgroundColor=ffd700`;
           
           return (
             <div key={character.id} className="card">
@@ -47,6 +72,10 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
                 alt={character.name}
                 className="card-image"
                 loading="lazy"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src = fallbackUrl;
+                }}
               />
               <div className="card-content">
                 <h3 className="card-title">{character.name}</h3>
