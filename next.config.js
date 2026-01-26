@@ -7,7 +7,9 @@ const nextConfig = {
         hostname: '**',
       },
     ],
+    unoptimized: true,
   },
+  reactStrictMode: true,
 }
 
 module.exports = nextConfig

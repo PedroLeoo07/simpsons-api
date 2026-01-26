@@ -40,12 +40,15 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
         {data.map((character) => (
           <div key={character.id} className="card">
             <img 
-              src={character.avatar} 
+              src={character.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`} 
               alt={character.name}
               className="card-image"
+              loading="lazy"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
-                target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.name}`;
+                if (!target.src.includes('dicebear')) {
+                  target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`;
+                }
               }}
             />
             <div className="card-content">
@@ -58,10 +61,11 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
                       removeFromFavorites(character.id.toString());
                     } else {
                       addToFavorites({
+                        id: character.id,
                         _id: character.id.toString(),
                         name: character.name,
                         normalized_name: character.normalized_name || '',
-                        avatar: character.avatar
+                        avatar: character.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`
                       });
                     }
                   }}
