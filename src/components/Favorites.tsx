@@ -32,30 +32,30 @@ export default function Favorites({ favorites, removeFromFavorites }: FavoritesP
         <div className="favorites-section">
           <h2>Personagens Favoritos</h2>
           <div className="grid">
-            {favorites.characters.map((character) => (
-              <div key={character._id || character.id} className="card">
-                <img 
-                  src={character.avatar} 
-                  alt={character.name}
-                  className="card-image"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement;
-                    target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.name}`;
-                  }}
-                />
-                <div className="card-content">
-                  <h3 className="card-title">{character.name}</h3>
-                  <div className="card-actions">
-                    <button 
-                      className="btn btn-favorite active"
-                      onClick={() => removeFromFavorites('characters', (character._id || character.id).toString())}
-                    >
-                      ❤️ Remover
-                    </button>
+            {favorites.characters.map((character) => {
+              const avatarUrl = character.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(character.name)}&backgroundColor=ffd700,ff6b00,00d4ff&radius=50`;
+              
+              return (
+                <div key={character._id || character.id} className="card">
+                  <img 
+                    src={avatarUrl}
+                    alt={character.name}
+                    className="card-image"
+                  />
+                  <div className="card-content">
+                    <h3 className="card-title">{character.name}</h3>
+                    <div className="card-actions">
+                      <button 
+                        className="btn btn-favorite active"
+                        onClick={() => removeFromFavorites('characters', (character._id || character.id).toString())}
+                      >
+                        ❤️ Remover
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

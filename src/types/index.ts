@@ -3,6 +3,7 @@ export interface Character {
   name: string;
   normalized_name: string;
   avatar: string;
+  gender?: string;
   _id?: string;
 }
 

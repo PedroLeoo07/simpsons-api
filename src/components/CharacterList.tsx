@@ -37,45 +37,48 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
       </div>
 
       <div className="grid">
-        {data.map((character) => (
-          <div key={character.id} className="card">
-            <img 
-              src={character.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`} 
-              alt={character.name}
-              className="card-image"
-              loading="lazy"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                if (!target.src.includes('dicebear')) {
-                  target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`;
-                }
-              }}
-            />
-            <div className="card-content">
-              <h3 className="card-title">{character.name}</h3>
-              <div className="card-actions">
-                <button 
-                  className={`btn btn-favorite ${isFavorite('characters', character.id.toString()) ? 'active' : ''}`}
-                  onClick={() => {
-                    if (isFavorite('characters', character.id.toString())) {
-                      removeFromFavorites(character.id.toString());
-                    } else {
-                      addToFavorites({
-                        id: character.id,
-                        _id: character.id.toString(),
-                        name: character.name,
-                        normalized_name: character.normalized_name || '',
-                        avatar: character.avatar || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(character.name)}`
-                      });
-                    }
-                  }}
-                >
-                  {isFavorite('characters', character.id.toString()) ? '❤️ Remover' : '🤍 Favoritar'}
-                </button>
+        {data.map((character) => {
+          const avatarUrl = `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(character.name)}&backgroundColor=ffd700,ff6b00,00d4ff&radius=50`;
+          
+          return (
+            <div key={character.id} className="card">
+              <img 
+                src={avatarUrl}
+                alt={character.name}
+                className="card-image"
+                loading="lazy"
+              />
+              <div className="card-content">
+                <h3 className="card-title">{character.name}</h3>
+                {character.gender && (
+                  <p className="card-info">
+                    {character.gender === 'Male' ? '👨' : character.gender === 'Female' ? '👩' : '👤'} {character.gender || 'N/A'}
+                  </p>
+                )}
+                <div className="card-actions">
+                  <button 
+                    className={`btn btn-favorite ${isFavorite('characters', character.id.toString()) ? 'active' : ''}`}
+                    onClick={() => {
+                      if (isFavorite('characters', character.id.toString())) {
+                        removeFromFavorites(character.id.toString());
+                      } else {
+                        addToFavorites({
+                          id: character.id,
+                          _id: character.id.toString(),
+                          name: character.name,
+                          normalized_name: character.normalized_name || '',
+                          avatar: avatarUrl
+                        });
+                      }
+                    }}
+                  >
+                    {isFavorite('characters', character.id.toString()) ? '❤️ Remover' : '🤍 Favoritar'}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );
