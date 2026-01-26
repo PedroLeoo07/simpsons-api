@@ -33,18 +33,22 @@ export default function Favorites({ favorites, removeFromFavorites }: FavoritesP
           <h2>Personagens Favoritos</h2>
           <div className="grid">
             {favorites.characters.map((character) => (
-              <div key={character._id} className="card">
+              <div key={character._id || character.id} className="card">
                 <img 
-                  src={character.avatar || 'https://via.placeholder.com/250x300?text=No+Image'} 
+                  src={character.avatar} 
                   alt={character.name}
                   className="card-image"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.name}`;
+                  }}
                 />
                 <div className="card-content">
                   <h3 className="card-title">{character.name}</h3>
                   <div className="card-actions">
                     <button 
                       className="btn btn-favorite active"
-                      onClick={() => removeFromFavorites('characters', character._id)}
+                      onClick={() => removeFromFavorites('characters', (character._id || character.id).toString())}
                     >
                       ❤️ Remover
                     </button>
@@ -61,19 +65,24 @@ export default function Favorites({ favorites, removeFromFavorites }: FavoritesP
           <h2>Episódios Favoritos</h2>
           <div className="grid">
             {favorites.episodes.map((episode) => (
-              <div key={episode._id} className="card">
+              <div key={episode._id || episode.id} className="card">
                 <img 
-                  src={episode.image_url || 'https://via.placeholder.com/250x300?text=No+Image'} 
+                  src={episode.thumbnailUrl} 
                   alt={episode.name}
                   className="card-image"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${episode.name}`;
+                  }}
                 />
                 <div className="card-content">
                   <h3 className="card-title">{episode.name}</h3>
-                  <p className="card-info">Temporada {episode.season}</p>
+                  <p className="card-info">Temporada {episode.season} - Ep. {episode.episode}</p>
+                  <p className="card-info">{episode.rating} ⭐</p>
                   <div className="card-actions">
                     <button 
                       className="btn btn-favorite active"
-                      onClick={() => removeFromFavorites('episodes', episode._id)}
+                      onClick={() => removeFromFavorites('episodes', (episode._id || episode.id).toString())}
                     >
                       ❤️ Remover
                     </button>
@@ -87,21 +96,26 @@ export default function Favorites({ favorites, removeFromFavorites }: FavoritesP
 
       {favorites.locations.length > 0 && (
         <div className="favorites-section">
-          <h2>Locações Favoritas</h2>
+          <h2>Produtos/Locações Favoritos</h2>
           <div className="grid">
             {favorites.locations.map((location) => (
-              <div key={location._id} className="card">
+              <div key={location._id || location.id} className="card">
                 <img 
-                  src={location.image || 'https://via.placeholder.com/250x300?text=No+Image'} 
-                  alt={location.name}
+                  src={location.image} 
+                  alt={location.title}
                   className="card-image"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://api.dicebear.com/7.x/shapes/svg?seed=${location.title}`;
+                  }}
                 />
                 <div className="card-content">
-                  <h3 className="card-title">{location.name}</h3>
+                  <h3 className="card-title">{location.title}</h3>
+                  <p className="card-info">{location.description?.substring(0, 80)}...</p>
                   <div className="card-actions">
                     <button 
                       className="btn btn-favorite active"
-                      onClick={() => removeFromFavorites('locations', location._id)}
+                      onClick={() => removeFromFavorites('locations', (location._id || location.id).toString())}
                     >
                       ❤️ Remover
                     </button>

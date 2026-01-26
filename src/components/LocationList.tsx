@@ -39,13 +39,17 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
         {filteredLocations.map((location) => (
           <div key={location.id} className="card">
             <img 
-              src={location.image || 'https://via.placeholder.com/250x300?text=No+Image'} 
+              src={location.image} 
               alt={location.title}
               className="card-image"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `https://api.dicebear.com/7.x/shapes/svg?seed=${location.title}`;
+              }}
             />
             <div className="card-content">
               <h3 className="card-title">{location.title}</h3>
-              <p className="card-info">{location.description?.substring(0, 80)}...</p>
+              <p className="card-info">{location.description?.substring(0, 100)}...</p>
               <div className="card-actions">
                 <button 
                   className={`btn btn-favorite ${isFavorite('locations', location.id.toString()) ? 'active' : ''}`}
@@ -54,10 +58,11 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
                       removeFromFavorites(location.id.toString());
                     } else {
                       addToFavorites({
-                        _id: location.id.toString(),
-                        name: location.title,
-                        normalized_name: location.title.toLowerCase().replace(/\s+/g, '-'),
-                        image: location.image || ''
+                        id: location.id,
+                        title: location.title,
+                        description: location.description,
+                        image: location.image,
+                        _id: location.id.toString()
                       });
                     }
                   }}

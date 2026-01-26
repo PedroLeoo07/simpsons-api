@@ -40,9 +40,13 @@ export default function CharacterList({ addToFavorites, isFavorite, removeFromFa
         {data.map((character) => (
           <div key={character.id} className="card">
             <img 
-              src={character.avatar || 'https://via.placeholder.com/250x300?text=No+Image'} 
+              src={character.avatar} 
               alt={character.name}
               className="card-image"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `https://api.dicebear.com/7.x/bottts/svg?seed=${character.name}`;
+              }}
             />
             <div className="card-content">
               <h3 className="card-title">{character.name}</h3>

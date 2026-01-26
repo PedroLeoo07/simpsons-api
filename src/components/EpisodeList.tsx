@@ -39,9 +39,13 @@ export default function EpisodeList({ addToFavorites, isFavorite, removeFromFavo
         {filteredEpisodes.slice(0, 50).map((episode) => (
           <div key={episode.id} className="card">
             <img 
-              src={episode.thumbnailUrl || 'https://via.placeholder.com/250x300?text=No+Image'} 
+              src={episode.thumbnailUrl} 
               alt={episode.name}
               className="card-image"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement;
+                target.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${episode.name}`;
+              }}
             />
             <div className="card-content">
               <h3 className="card-title">{episode.name}</h3>
@@ -55,16 +59,14 @@ export default function EpisodeList({ addToFavorites, isFavorite, removeFromFavo
                       removeFromFavorites(episode.id.toString());
                     } else {
                       addToFavorites({
-                        _id: episode.id.toString(),
                         id: episode.id,
                         name: episode.name,
                         season: episode.season,
-                        number_in_season: episode.episode,
-                        number_in_series: episode.id,
-                        original_air_date: episode.originalAirDate,
-                        production_code: '',
-                        image_url: episode.thumbnailUrl || '',
-                        video_url: ''
+                        episode: episode.episode,
+                        rating: episode.rating,
+                        originalAirDate: episode.originalAirDate,
+                        thumbnailUrl: episode.thumbnailUrl,
+                        _id: episode.id.toString()
                       });
                     }
                   }}
