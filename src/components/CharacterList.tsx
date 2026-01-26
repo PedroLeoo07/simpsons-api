@@ -12,26 +12,37 @@ interface CharacterListProps {
 
 // Mapeamento de imagens reais dos personagens dos Simpsons
 const characterImages: { [key: string]: string } = {
-  'homer simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/HomerSimpson.png',
-  'marge simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MargeSimpson.png',
-  'bart simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/BartSimpson.png',
-  'lisa simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/LisaSimpson.png',
-  'maggie simpson': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MaggieSimpson.png',
-  'ned flanders': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/NedFlanders.png',
-  'moe szyslak': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MoeSzyslak.png',
-  'barney gumble': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/BarneyGumble.png',
-  'krusty the clown': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/KrustyTheClown.png',
-  'chief wiggum': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ChiefWiggum.png',
-  'apu nahasapeemapetilon': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ApuNahasapeemapetilon.png',
-  'comic book guy': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/ComicBookGuy.png',
-  'milhouse van houten': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/MilhouseVanHouten.png',
-  'nelson muntz': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/NelsonMuntz.png',
-  'ralph wiggum': 'https://cdn.glitch.global/3c3ffadc-3406-4440-bb95-d40ec8fcde72/RalphWiggum.png',
+  'homer simpson': 'https://i.imgur.com/2WnLIKK.png',
+  'marge simpson': 'https://i.imgur.com/eUQGWnh.png',
+  'bart simpson': 'https://i.imgur.com/W8JNE0c.png',
+  'lisa simpson': 'https://i.imgur.com/6JYhMQX.png',
+  'maggie simpson': 'https://i.imgur.com/hKOGvMh.png',
+  'ned flanders': 'https://i.imgur.com/G9ALf3N.png',
+  'moe szyslak': 'https://i.imgur.com/ckBlwIa.png',
+  'barney gumble': 'https://i.imgur.com/3mPpLcj.png',
+  'krusty the clown': 'https://i.imgur.com/FJw7zhd.png',
+  'chief wiggum': 'https://i.imgur.com/JzHgBFv.png',
+  'apu nahasapeemapetilon': 'https://i.imgur.com/YCAx8bE.png',
+  'comic book guy': 'https://i.imgur.com/1qH6b7L.png',
+  'milhouse van houten': 'https://i.imgur.com/7qfaAqQ.png',
+  'nelson muntz': 'https://i.imgur.com/w6qqOkH.png',
+  'ralph wiggum': 'https://i.imgur.com/DnPnqzI.png',
+  'abraham simpson': 'https://i.imgur.com/qQB7LHS.png',
+  'montgomery burns': 'https://i.imgur.com/jhAYGMu.png',
+  'waylon smithers': 'https://i.imgur.com/VEW98Fa.png',
+  'principal skinner': 'https://i.imgur.com/x6RYnSY.png',
+  'edna krabappel': 'https://i.imgur.com/vMdQRqe.png',
+  'groundskeeper willie': 'https://i.imgur.com/8QGRkqT.png',
+  'otto mann': 'https://i.imgur.com/7H4fXvk.png',
+  'lenny leonard': 'https://i.imgur.com/XeJCkwh.png',
+  'carl carlson': 'https://i.imgur.com/EBgvphZ.png',
+  'patty bouvier': 'https://i.imgur.com/VwHYqc6.png',
+  'selma bouvier': 'https://i.imgur.com/TkPXqDk.png',
 };
 
 function getCharacterImage(name: string): string {
   const normalized = name.toLowerCase().trim();
-  return characterImages[normalized] || `https://joeschmoe.io/api/v1/random?name=${encodeURIComponent(name)}`;
+  return characterImages[normalized] || `https://api.dicebear.com/7.x/fun-emoji/svg?seed=${encodeURIComponent(name)}&backgroundColor=ffd700`;
 }
 
 export default function CharacterList({ addToFavorites, isFavorite, removeFromFavorites }: CharacterListProps) {
