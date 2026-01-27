@@ -1,58 +1,72 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { useFetch } from '@/hooks/useFetch';
-import { Location } from '@/types';
-import LoadingSkeleton from './LoadingSkeleton';
+import { useState, useMemo } from "react";
+import { useFetch } from "@/hooks/useFetch";
+import { Location } from "@/types";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 interface LocationListProps {
   addToFavorites: (location: Location) => void;
-  isFavorite: (type: 'locations', id: string) => boolean;
+  isFavorite: (type: "locations", id: string) => boolean;
   removeFromFavorites: (id: string) => void;
 }
 
-export default function LocationList({ addToFavorites, isFavorite, removeFromFavorites }: LocationListProps) {
-  const [search, setSearch] = useState('');
+export default function LocationList({
+  addToFavorites,
+  isFavorite,
+  removeFromFavorites,
+}: LocationListProps) {
+  const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
 
-  const { data, loading, error } = useFetch<any[]>('https://api.sampleapis.com/simpsons/products');
+  const { data, loading, error } = useFetch<any[]>(
+    "https://api.sampleapis.com/simpsons/products",
+  );
 
   const filteredLocations = useMemo(() => {
     if (!data) return [];
     return search
-      ? data.filter(loc =>
-          loc.title?.toLowerCase().includes(search.toLowerCase()) ||
-          loc.description?.toLowerCase().includes(search.toLowerCase())
+      ? data.filter(
+          (loc) =>
+            loc.title?.toLowerCase().includes(search.toLowerCase()) ||
+            loc.description?.toLowerCase().includes(search.toLowerCase()),
         )
       : data;
   }, [data, search]);
 
   const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentLocations = filteredLocations.slice(startIndex, startIndex + itemsPerPage);
+  const currentLocations = filteredLocations.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   if (loading) return <LoadingSkeleton count={12} />;
 
-  if (error) return (
-    <div className="error">
-      <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🏢</div>
-      <div>Ops! Não conseguimos carregar os produtos/locações.</div>
-      <div style={{ fontSize: '0.9rem', marginTop: '0.5rem', opacity: 0.8 }}>{error}</div>
-    </div>
-  );
+  if (error)
+    return (
+      <div className="error">
+        <div style={{ fontSize: "3rem", marginBottom: "1rem" }}>🏢</div>
+        <div>Ops! Não conseguimos carregar os produtos/locações.</div>
+        <div style={{ fontSize: "0.9rem", marginTop: "0.5rem", opacity: 0.8 }}>
+          {error}
+        </div>
+      </div>
+    );
 
-  if (!data || data.length === 0) return (
-    <div className="empty-state">
-      <div className="empty-state-icon">🔍</div>
-      <div className="empty-state-text">Nenhuma locação encontrada</div>
-    </div>
-  );
+  if (!data || data.length === 0)
+    return (
+      <div className="empty-state">
+        <div className="empty-state-icon">🔍</div>
+        <div className="empty-state-text">Nenhuma locação encontrada</div>
+      </div>
+    );
 
   return (
     <>
@@ -68,13 +82,17 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
           }}
           aria-label="Buscar produtos e locações"
         />
-        <div style={{
-          fontSize: '0.9rem',
-          color: 'var(--text-secondary)',
-          marginTop: 'var(--spacing-xs)',
-          textAlign: 'center'
-        }}>
-          {filteredLocations.length} ite{filteredLocations.length === 1 ? 'm' : 'ns'} encontrado{filteredLocations.length === 1 ? '' : 's'}
+        <div
+          style={{
+            fontSize: "0.9rem",
+            color: "var(--text-secondary)",
+            marginTop: "var(--spacing-xs)",
+            textAlign: "center",
+          }}
+        >
+          {filteredLocations.length} ite
+          {filteredLocations.length === 1 ? "m" : "ns"} encontrado
+          {filteredLocations.length === 1 ? "" : "s"}
         </div>
       </div>
 
@@ -82,13 +100,15 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
         <div className="empty-state">
           <div className="empty-state-icon">😢</div>
           <div className="empty-state-text">Nenhum item encontrado</div>
-          <div className="empty-state-subtext">Tente buscar por "{search.slice(0, 20)}..."</div>
+          <div className="empty-state-subtext">
+            Tente buscar por "{search.slice(0, 20)}..."
+          </div>
         </div>
       ) : (
         <>
           <div className="grid">
             {currentLocations.map((location) => {
-              const isFav = isFavorite('locations', location.id.toString());
+              const isFav = isFavorite("locations", location.id.toString());
 
               return (
                 <div key={location.id} className="card">
@@ -107,7 +127,11 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
                     {location.description && (
                       <div className="card-info">
                         <span>📝</span>
-                        <span>{location.description.length > 100 ? `${location.description.slice(0, 100)}...` : location.description}</span>
+                        <span>
+                          {location.description.length > 100
+                            ? `${location.description.slice(0, 100)}...`
+                            : location.description}
+                        </span>
                       </div>
                     )}
                     <div className="card-info">
@@ -116,21 +140,25 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
                     </div>
                     <div className="card-actions">
                       <button
-                        className={`btn btn-favorite ${isFav ? 'active' : ''}`}
+                        className={`btn btn-favorite ${isFav ? "active" : ""}`}
                         onClick={() => {
                           if (isFav) {
                             removeFromFavorites(location.id.toString());
                           } else {
                             addToFavorites({
                               ...location,
-                              _id: location.id.toString()
+                              _id: location.id.toString(),
                             });
                           }
                         }}
-                        aria-label={isFav ? `Remover ${location.title} dos favoritos` : `Adicionar ${location.title} aos favoritos`}
+                        aria-label={
+                          isFav
+                            ? `Remover ${location.title} dos favoritos`
+                            : `Adicionar ${location.title} aos favoritos`
+                        }
                       >
-                        <span>{isFav ? '❤️' : '🤍'}</span>
-                        <span>{isFav ? 'Remover' : 'Favoritar'}</span>
+                        <span>{isFav ? "❤️" : "🤍"}</span>
+                        <span>{isFav ? "Remover" : "Favoritar"}</span>
                       </button>
                     </div>
                   </div>
@@ -165,7 +193,7 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
                   <button
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    className={currentPage === pageNum ? 'active' : ''}
+                    className={currentPage === pageNum ? "active" : ""}
                     aria-label={`Página ${pageNum}`}
                   >
                     {pageNum}
@@ -188,35 +216,6 @@ export default function LocationList({ addToFavorites, isFavorite, removeFromFav
           )}
         </>
       )}
-    </>
-  );
-}
-              <h3 className="card-title">{location.title}</h3>
-              <p className="card-info">{location.description?.substring(0, 100)}...</p>
-              <div className="card-actions">
-                <button
-                  className={`btn btn-favorite ${isFavorite('locations', location.id.toString()) ? 'active' : ''}`}
-                  onClick={() => {
-                    if (isFavorite('locations', location.id.toString())) {
-                      removeFromFavorites(location.id.toString());
-                    } else {
-                      addToFavorites({
-                        id: location.id,
-                        title: location.title,
-                        description: location.description,
-                        image: location.image,
-                        _id: location.id.toString()
-                      });
-                    }
-                  }}
-                >
-                  {isFavorite('locations', location.id.toString()) ? '❤️ Remover' : '🤍 Favoritar'}
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
     </>
   );
 }
