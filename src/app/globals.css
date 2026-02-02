@@ -84,6 +84,10 @@ body {
   color: var(--text-primary);
   line-height: 1.6;
   transition: var(--transition);
+  /* Performance optimizations */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 @keyframes gradient {
@@ -131,9 +135,14 @@ body {
   box-shadow: 0 20px 60px var(--shadow-color);
   overflow: hidden;
   border: 2px solid var(--border-color);
-  backdrop-filter: blur(10px);
+  /* Glassmorphism */
   background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
   transition: var(--transition);
+  /* Performance optimization */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 [data-theme="dark"] .container {
@@ -305,6 +314,8 @@ body {
   font-weight: 500;
   color: var(--text-primary);
   box-shadow: 0 2px 8px var(--shadow-color);
+  /* Performance */
+  will-change: transform, box-shadow;
 }
 
 .search-input:focus {
@@ -372,6 +383,18 @@ body {
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: 0 4px 12px var(--shadow-color);
+  animation: skeletonFadeIn 0.3s ease-in;
+}
+
+@keyframes skeletonFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .skeleton-image {
@@ -417,6 +440,9 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--spacing-md);
   margin-bottom: var(--spacing-lg);
+  /* Performance optimization */
+  contain: layout style paint;
+  will-change: contents;
 }
 
 .card {
@@ -429,6 +455,9 @@ body {
   border: 1px solid var(--border-color);
   position: relative;
   backdrop-filter: blur(10px);
+  /* Melhorias de performance */
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .card::before {
@@ -457,8 +486,39 @@ body {
 }
 
 .card:hover {
-  transform: translateY(-8px) scale(1.02);
+  transform: translateY(-8px) scale(1.02) translateZ(0);
   box-shadow: 0 12px 30px var(--shadow-hover);
+}
+
+/* Lazy Image Styles */
+.lazy-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  background: var(--bg-tertiary);
+}
+
+.image-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    135deg,
+    var(--primary-light) 0%,
+    var(--accent-color) 100%
+  );
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top-color: var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .card-image {
@@ -468,6 +528,24 @@ body {
   background: var(--bg-tertiary);
   transition: var(--transition);
   display: block;
+}
+
+.card-image.loading {
+  opacity: 0;
+}
+
+.card-image.loaded {
+  opacity: 1;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .card-image[src=""],
@@ -497,10 +575,18 @@ body {
 .card-content {
   padding: var(--spacing-md);
   background: var(--card-hover-bg);
+  /* Glassmorphism effect */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+
+[data-theme="dark"] .card-content {
+  background: rgba(45, 45, 45, 0.7);
 }
 
 .card-title {
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: var(--spacing-sm);
   color: var(--primary-dark);
@@ -509,6 +595,10 @@ body {
   display: flex;
   align-items: center;
   text-shadow: none;
+  /* Melhor tipografia */
+  letter-spacing: -0.5px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 .card-info {
@@ -554,6 +644,30 @@ body {
   );
   color: var(--text-primary);
   box-shadow: 0 4px 10px rgba(255, 165, 0, 0.3);
+  /* Performance */
+  will-change: transform, box-shadow;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-favorite::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition:
+    width 0.6s,
+    height 0.6s;
+}
+
+.btn-favorite:active::before {
+  width: 300px;
+  height: 300px;
 }
 
 .btn-favorite:hover {
@@ -570,6 +684,17 @@ body {
   background: linear-gradient(135deg, #ff1744 0%, #c62828 100%);
   color: white;
   box-shadow: 0 4px 10px rgba(255, 23, 68, 0.3);
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .btn-favorite.active:hover {

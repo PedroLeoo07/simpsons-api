@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from "react";
 
 interface UseFetchResult<T> {
   data: T | null;
@@ -11,7 +11,10 @@ interface UseFetchResult<T> {
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 
-export function useFetch<T>(url: string, enableCache = true): UseFetchResult<T> {
+export function useFetch<T>(
+  url: string,
+  enableCache = true,
+): UseFetchResult<T> {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,7 +31,7 @@ export function useFetch<T>(url: string, enableCache = true): UseFetchResult<T> 
       abortControllerRef.current = new AbortController();
       setLoading(true);
       setError(null);
-      
+
       try {
         // Verifica cache
         if (enableCache) {
@@ -49,7 +52,7 @@ export function useFetch<T>(url: string, enableCache = true): UseFetchResult<T> 
         }
 
         const result = await response.json();
-        
+
         // Armazena no cache
         if (enableCache) {
           cache.set(url, { data: result, timestamp: Date.now() });
@@ -57,11 +60,11 @@ export function useFetch<T>(url: string, enableCache = true): UseFetchResult<T> 
 
         setData(result);
       } catch (err) {
-        if (err instanceof Error && err.name === 'AbortError') {
+        if (err instanceof Error && err.name === "AbortError") {
           // Requisição foi cancelada, não faz nada
           return;
         }
-        setError(err instanceof Error ? err.message : 'An error occurred');
+        setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
         setLoading(false);
       }
@@ -80,7 +83,7 @@ export function useFetch<T>(url: string, enableCache = true): UseFetchResult<T> 
   const refetch = () => {
     // Limpa cache ao fazer refetch
     cache.delete(url);
-    setRefetchKey(prev => prev + 1);
+    setRefetchKey((prev) => prev + 1);
   };
 
   return { data, loading, error, refetch };

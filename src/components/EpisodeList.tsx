@@ -2,8 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { useFetch } from "@/hooks/useFetch";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Episode } from "@/types";
 import LoadingSkeleton from "./LoadingSkeleton";
+import LazyImage from "./LazyImage";
 
 interface EpisodeListProps {
   addToFavorites: (episode: Episode) => void;
@@ -20,22 +22,24 @@ export default function EpisodeList({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18;
 
+  const debouncedSearch = useDebounce(search, 300);
+
   const { data, loading, error } = useFetch<Episode[]>(
     "https://api.sampleapis.com/simpsons/episodes",
   );
 
   const filteredEpisodes = useMemo(() => {
     if (!data) return [];
-    return search
+    return debouncedSearch
       ? data.filter(
           (ep) =>
-            ep.name.toLowerCase().includes(search.toLowerCase()) ||
+            ep.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
             `S${ep.season}E${ep.episode}`
               .toLowerCase()
-              .includes(search.toLowerCase()),
+              .includes(debouncedSearch.toLowerCase()),
         )
       : data;
-  }, [data, search]);
+  }, [data, debouncedSearch]);
 
   const totalPages = Math.ceil(filteredEpisodes.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -114,11 +118,9 @@ export default function EpisodeList({
 
               return (
                 <div key={episode.id} className="card">
-                  <img
+                  <LazyImage
                     src={episode.thumbnailUrl}
                     alt={episode.name}
-                    className="card-image"
-                    loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = `https://api.dicebear.com/7.x/identicon/svg?seed=${episode.name}`;

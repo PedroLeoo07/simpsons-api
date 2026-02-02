@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 
 interface UseImageLazyLoadResult {
   imageSrc: string | undefined;
@@ -28,9 +28,9 @@ export function useImageLazyLoad(src: string): UseImageLazyLoadResult {
         });
       },
       {
-        rootMargin: '50px', // Começa a carregar 50px antes da imagem entrar na tela
+        rootMargin: "50px", // Começa a carregar 50px antes da imagem entrar na tela
         threshold: 0.01,
-      }
+      },
     );
 
     observer.observe(imageRef.current);

@@ -2,8 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { useFetch } from "@/hooks/useFetch";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Location } from "@/types";
 import LoadingSkeleton from "./LoadingSkeleton";
+import LazyImage from "./LazyImage";
 
 interface LocationListProps {
   addToFavorites: (location: Location) => void;
@@ -20,20 +22,24 @@ export default function LocationList({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 16;
 
+  const debouncedSearch = useDebounce(search, 300);
+
   const { data, loading, error } = useFetch<any[]>(
     "https://api.sampleapis.com/simpsons/products",
   );
 
   const filteredLocations = useMemo(() => {
     if (!data) return [];
-    return search
+    return debouncedSearch
       ? data.filter(
           (loc) =>
-            loc.title?.toLowerCase().includes(search.toLowerCase()) ||
-            loc.description?.toLowerCase().includes(search.toLowerCase()),
+            loc.title?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+            loc.description
+              ?.toLowerCase()
+              .includes(debouncedSearch.toLowerCase()),
         )
       : data;
-  }, [data, search]);
+  }, [data, debouncedSearch]);
 
   const totalPages = Math.ceil(filteredLocations.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -112,11 +118,9 @@ export default function LocationList({
 
               return (
                 <div key={location.id} className="card">
-                  <img
+                  <LazyImage
                     src={location.image}
                     alt={location.title}
-                    className="card-image"
-                    loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.src = `https://api.dicebear.com/7.x/shapes/svg?seed=${location.title}`;

@@ -2,8 +2,10 @@
 
 import { useState, useMemo } from "react";
 import { useFetch } from "@/hooks/useFetch";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Character } from "@/types";
 import LoadingSkeleton from "./LoadingSkeleton";
+import LazyImage from "./LazyImage";
 
 interface CharacterListProps {
   addToFavorites: (character: Character) => void;
@@ -28,20 +30,25 @@ export default function CharacterList({
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 20;
 
+  // Debounce da busca para melhorar performance
+  const debouncedSearch = useDebounce(search, 300);
+
   const url = `https://thesimpsonsapi.com/api/characters?limit=50`;
 
   const { data, loading, error } = useFetch<ApiResponse>(url);
 
   const filteredCharacters = useMemo(() => {
     if (!data?.results) return [];
-    return search
+    return debouncedSearch
       ? data.results.filter(
           (char) =>
-            char.name.toLowerCase().includes(search.toLowerCase()) ||
-            char.occupation.toLowerCase().includes(search.toLowerCase()),
+            char.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+            char.occupation
+              .toLowerCase()
+              .includes(debouncedSearch.toLowerCase()),
         )
       : data.results;
-  }, [data?.results, search]);
+  }, [data?.results, debouncedSearch]);
 
   const totalPages = Math.ceil(filteredCharacters.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -122,11 +129,9 @@ export default function CharacterList({
 
               return (
                 <div key={character.id} className="card">
-                  <img
+                  <LazyImage
                     src={imageUrl}
                     alt={character.name}
-                    className="card-image"
-                    loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = "none";
