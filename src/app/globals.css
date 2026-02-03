@@ -128,21 +128,36 @@ body {
   background: var(--card-bg);
   border: 2px solid var(--border-color);
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-size: 1.5rem;
-  transition: var(--transition);
+  transition: var(--transition-bounce);
   box-shadow: 0 4px 12px var(--shadow-color);
   z-index: 1000;
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+.theme-toggle::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.theme-toggle:hover::before {
+  opacity: 0.2;
 }
 
 .theme-toggle:hover {
-  transform: scale(1.1) rotate(15deg);
-  box-shadow: 0 6px 20px var(--shadow-hover);
+  transform: scale(1.15) rotate(20deg);
+  box-shadow: 0 8px 25px var(--shadow-hover);
   border-color: var(--primary-color);
 }
 
@@ -151,7 +166,9 @@ body {
   margin: 0 auto;
   background: var(--card-bg);
   border-radius: var(--border-radius-lg);
-  box-shadow: 0 25px 80px var(--shadow-lg), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 25px 80px var(--shadow-lg),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.2);
   /* Glassmorphism aprimorado */
@@ -168,7 +185,9 @@ body {
 [data-theme="dark"] .container {
   background: rgba(30, 41, 59, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .header {
@@ -208,7 +227,8 @@ body {
 }
 
 @keyframes headerGlow {
-  0%, 100% {
+  0%,
+  100% {
     filter: brightness(1) saturate(1);
   }
   50% {
@@ -331,9 +351,31 @@ body {
   position: relative;
 }
 
+.search-box::before {
+  content: "\1F50D";
+  position: absolute;
+  left: var(--spacing-md);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+  animation: searchPulse 2s ease-in-out infinite;
+}
+
+@keyframes searchPulse {
+  0%, 100% {
+    transform: translateY(-50%) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) scale(1.1);
+  }
+}
+
 .search-input {
   width: 100%;
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--spacing-sm) var(--spacing-md) var(--spacing-sm) calc(var(--spacing-md) * 3);
   font-size: 1.1rem;
   border: 2px solid var(--border-color);
   border-radius: var(--border-radius);
@@ -344,15 +386,22 @@ body {
   color: var(--text-primary);
   box-shadow: 0 2px 8px var(--shadow-color);
   /* Performance */
-  will-change: transform, box-shadow;
+  will-change: transform, box-shadow, border-color;
 }
 
 .search-input:focus {
-  border-color: var(--border-focus);
+  border-color: transparent;
+  background: linear-gradient(white, white) padding-box,
+              var(--gradient-primary) border-box;
   box-shadow:
-    0 0 0 3px rgba(255, 107, 0, 0.1),
-    0 4px 12px var(--shadow-color);
-  transform: translateY(-1px);
+    0 0 0 4px rgba(102, 126, 234, 0.1),
+    0 8px 20px var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+[data-theme="dark"] .search-input:focus {
+  background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+              var(--gradient-primary) border-box;
 }
 
 .search-input::placeholder {
@@ -478,45 +527,47 @@ body {
   background: var(--card-bg);
   border-radius: var(--border-radius);
   overflow: hidden;
-  box-shadow: 0 4px 12px var(--shadow-color);
+  box-shadow: 0 4px 20px var(--shadow-color);
   transition: var(--transition-bounce);
   cursor: pointer;
-  border: 1px solid var(--border-color);
+  border: 1px solid transparent;
   position: relative;
   backdrop-filter: blur(10px);
   /* Melhorias de performance */
   will-change: transform;
-  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  contain: layout style paint;
 }
 
 .card::before {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -2px;
   border-radius: var(--border-radius);
-  padding: 2px;
-  background: linear-gradient(
-    135deg,
-    var(--primary-light),
-    var(--primary-color),
-    var(--secondary-color)
-  );
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  background: var(--gradient-primary);
   opacity: 0;
-  transition: var(--transition);
+  transition: opacity 0.4s ease;
+  z-index: -1;
 }
 
 .card:hover::before {
-  opacity: 0.8;
+  opacity: 1;
+  animation: borderRotate 3s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 .card:hover {
-  transform: translateY(-8px) scale(1.02) translateZ(0);
-  box-shadow: 0 12px 30px var(--shadow-hover);
+  transform: translateY(-12px) scale(1.03) rotateX(2deg);
+  box-shadow: 0 20px 40px var(--shadow-hover), 0 0 0 2px var(--primary-color);
 }
 
 /* Lazy Image Styles */

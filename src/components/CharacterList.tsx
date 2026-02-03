@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Character } from "@/types";
@@ -57,10 +57,10 @@ export default function CharacterList({
     startIndex + itemsPerPage,
   );
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, []);
 
   if (loading) return <LoadingSkeleton count={12} />;
 
@@ -89,7 +89,7 @@ export default function CharacterList({
       <div className="search-box">
         <input
           type="text"
-          placeholder="🔍 Buscar por nome ou profissão..."
+          placeholder="Buscar por nome ou profissão..."
           className="search-input"
           value={search}
           onChange={(e) => {
