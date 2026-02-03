@@ -251,5 +251,3 @@ function CharacterList({
 }
 
 export default memo(CharacterList);
-
-export default memo(CharacterList);

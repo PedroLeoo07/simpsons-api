@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { Character, Episode, Location } from "@/types";
 
 interface FavoritesProps {
@@ -14,10 +15,7 @@ interface FavoritesProps {
   ) => void;
 }
 
-export default function Favorites({
-  favorites,
-  removeFromFavorites,
-}: FavoritesProps) {
+function Favorites({ favorites, removeFromFavorites }: FavoritesProps) {
   const totalFavorites =
     favorites.characters.length +
     favorites.episodes.length +
@@ -254,3 +252,5 @@ export default function Favorites({
     </div>
   );
 }
+
+export default memo(Favorites);

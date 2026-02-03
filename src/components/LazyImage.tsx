@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import { useImageLazyLoad } from "@/hooks/useImageLazyLoad";
 
 interface LazyImageProps {
@@ -9,12 +10,7 @@ interface LazyImageProps {
   onError?: (e: React.SyntheticEvent<HTMLImageElement>) => void;
 }
 
-export default function LazyImage({
-  src,
-  alt,
-  className = "",
-  onError,
-}: LazyImageProps) {
+function LazyImage({ src, alt, className = "", onError }: LazyImageProps) {
   const { imageSrc, imageRef, isLoaded } = useImageLazyLoad(src);
 
   return (
@@ -34,3 +30,5 @@ export default function LazyImage({
     </div>
   );
 }
+
+export default memo(LazyImage);

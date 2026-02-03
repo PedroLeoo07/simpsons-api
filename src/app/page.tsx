@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Character, Episode, Location } from "@/types";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import CharacterList from "@/components/CharacterList";
@@ -24,9 +24,9 @@ export default function Home() {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  const toggleTheme = () => {
+  const toggleTheme = useCallback(() => {
     setTheme(theme === "light" ? "dark" : "light");
-  };
+  }, [theme, setTheme]);
 
   const addToFavorites = (
     type: "characters" | "episodes" | "locations",
