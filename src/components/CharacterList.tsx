@@ -21,7 +21,7 @@ interface ApiResponse {
   results: Character[];
 }
 
-export default function CharacterList({
+function CharacterList({
   addToFavorites,
   isFavorite,
   removeFromFavorites,
@@ -249,3 +249,7 @@ export default function CharacterList({
     </>
   );
 }
+
+export default memo(CharacterList);
+
+export default memo(CharacterList);

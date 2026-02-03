@@ -1,8 +1,10 @@
+import { memo } from "react";
+
 interface LoadingSkeletonProps {
   count?: number;
 }
 
-export default function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
+function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
   return (
     <div className="grid">
       {Array.from({ length: count }).map((_, index) => (
@@ -30,3 +32,5 @@ export default function LoadingSkeleton({ count = 8 }: LoadingSkeletonProps) {
     </div>
   );
 }
+
+export default memo(LoadingSkeleton);

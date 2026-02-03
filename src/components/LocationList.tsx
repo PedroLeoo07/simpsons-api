@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Location } from "@/types";
@@ -13,7 +13,7 @@ interface LocationListProps {
   removeFromFavorites: (id: string) => void;
 }
 
-export default function LocationList({
+function LocationList({
   addToFavorites,
   isFavorite,
   removeFromFavorites,
@@ -48,10 +48,10 @@ export default function LocationList({
     startIndex + itemsPerPage,
   );
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, []);
 
   if (loading) return <LoadingSkeleton count={12} />;
 
@@ -223,3 +223,5 @@ export default function LocationList({
     </>
   );
 }
+
+export default memo(LocationList);

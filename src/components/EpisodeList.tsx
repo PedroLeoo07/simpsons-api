@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import { useFetch } from "@/hooks/useFetch";
 import { useDebounce } from "@/hooks/useDebounce";
 import { Episode } from "@/types";
@@ -13,7 +13,7 @@ interface EpisodeListProps {
   removeFromFavorites: (id: string) => void;
 }
 
-export default function EpisodeList({
+function EpisodeList({
   addToFavorites,
   isFavorite,
   removeFromFavorites,
@@ -48,10 +48,10 @@ export default function EpisodeList({
     startIndex + itemsPerPage,
   );
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  }, []);
 
   if (loading) return <LoadingSkeleton count={12} />;
 
@@ -231,3 +231,5 @@ export default function EpisodeList({
     </>
   );
 }
+
+export default memo(EpisodeList);
