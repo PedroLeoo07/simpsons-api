@@ -148,6 +148,11 @@ export default function Home() {
           />
         )}
       </div>
+
+      <footer className="footer">
+        <p>🏡 Springfield • 📺 Criado com 💛 por fãs dos Simpsons</p>
+        <p className="footer-text">D'oh! Feito com React & Next.js</p>
+      </footer>
     </main>
   );
 }
