@@ -1,18 +1,18 @@
 :root {
-  /* Light theme variables */
-  --primary-color: #ff6b00;
-  --primary-light: #ffd700;
-  --primary-dark: #0066cc;
-  --secondary-color: #00d4ff;
-  --accent-color: #ffa500;
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  /* Light theme variables - Simpsons inspired */
+  --primary-color: #ffd90f;
+  --primary-light: #ffe55c;
+  --primary-dark: #ffbf00;
+  --secondary-color: #00a8e1;
+  --accent-color: #ff6b6b;
+  --gradient-primary: linear-gradient(135deg, #ffd90f 0%, #00a8e1 100%);
+  --gradient-secondary: linear-gradient(135deg, #ff6b6b 0%, #ffd90f 100%);
+  --gradient-accent: linear-gradient(135deg, #00a8e1 0%, #74d680 100%);
 
   --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #e9ecef;
-  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  --bg-secondary: #f8fcff;
+  --bg-tertiary: #e8f5ff;
+  --bg-gradient: linear-gradient(135deg, #74d680 0%, #00a8e1 50%, #ffd90f 100%);
 
   --text-primary: #333333;
   --text-secondary: #666666;
@@ -20,10 +20,10 @@
   --text-on-primary: #ffffff;
 
   --border-color: #e0e6ed;
-  --border-focus: #667eea;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --shadow-hover: rgba(102, 126, 234, 0.3);
-  --shadow-lg: rgba(0, 0, 0, 0.15);
+  --border-focus: #ffd90f;
+  --shadow-color: rgba(0, 0, 0, 0.08);
+  --shadow-hover: rgba(255, 217, 15, 0.4);
+  --shadow-lg: rgba(0, 0, 0, 0.12);
 
   --card-bg: #ffffff;
   --card-hover-bg: #f8f9fa;
@@ -88,7 +88,7 @@ body {
   background: var(--bg-gradient);
   min-height: 100vh;
   padding: var(--spacing-md);
-  animation: gradientShift 20s ease infinite;
+  animation: gradientShift 25s ease infinite, fadeIn 0.6s ease;
   background-size: 400% 400%;
   color: var(--text-primary);
   line-height: 1.6;
@@ -101,6 +101,17 @@ body {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes gradientShift {
