@@ -88,7 +88,9 @@ body {
   background: var(--bg-gradient);
   min-height: 100vh;
   padding: var(--spacing-md);
-  animation: gradientShift 25s ease infinite, fadeIn 0.6s ease;
+  animation:
+    gradientShift 25s ease infinite,
+    fadeIn 0.6s ease;
   background-size: 400% 400%;
   color: var(--text-primary);
   line-height: 1.6;
@@ -329,7 +331,7 @@ body {
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(102, 126, 234, 0.1) 100%
+    rgba(255, 217, 15, 0.15) 100%
   );
   font-weight: 700;
   position: relative;
@@ -362,12 +364,23 @@ body {
 
 .favorites-count {
   margin-left: var(--spacing-xs);
-  background: var(--primary-color);
-  color: var(--text-on-primary);
+  background: linear-gradient(135deg, #ffd90f 0%, #ffbf00 100%);
+  color: #333;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 700;
+  box-shadow: 0 2px 8px rgba(255, 217, 15, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
 }
 
 .content {
@@ -426,7 +439,7 @@ body {
     linear-gradient(white, white) padding-box,
     var(--gradient-primary) border-box;
   box-shadow:
-    0 0 0 4px rgba(102, 126, 234, 0.1),
+    0 0 0 4px rgba(255, 217, 15, 0.2),
     0 8px 20px var(--shadow-hover);
   transform: translateY(-2px);
 }
@@ -600,10 +613,11 @@ body {
 }
 
 .card:hover {
-  transform: translateY(-12px) scale(1.03) rotateX(2deg);
+  transform: translateY(-8px) scale(1.02);
   box-shadow:
     0 20px 40px var(--shadow-hover),
-    0 0 0 2px var(--primary-color);
+    0 0 0 3px var(--primary-color),
+    inset 0 0 20px rgba(255, 217, 15, 0.1);
 }
 
 /* Lazy Image Styles */
@@ -753,9 +767,9 @@ body {
 }
 
 .btn-favorite {
-  background: var(--gradient-primary);
-  color: white;
-  box-shadow: 0 4px 15px var(--shadow-hover);
+  background: linear-gradient(135deg, #ffd90f 0%, #ffbf00 100%);
+  color: #333;
+  box-shadow: 0 4px 15px rgba(255, 217, 15, 0.4);
   /* Performance */
   will-change: transform, box-shadow;
   position: relative;
@@ -765,6 +779,7 @@ body {
   align-items: center;
   justify-content: center;
   gap: var(--spacing-xs);
+  font-weight: 700;
 }
 
 .btn-favorite::before {
@@ -788,15 +803,15 @@ body {
 }
 
 .btn-favorite:hover {
-  background: var(--gradient-secondary);
+  background: linear-gradient(135deg, #ffe55c 0%, #ffd90f 100%);
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px var(--shadow-hover);
+  box-shadow: 0 8px 25px rgba(255, 217, 15, 0.5);
 }
 
 .btn-favorite.active {
-  background: var(--gradient-accent);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
   animation: heartBeat 0.6s ease;
 }
 
@@ -819,9 +834,9 @@ body {
 }
 
 .btn-favorite.active:hover {
-  background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+  background: linear-gradient(135deg, #ff5252 0%, #ff3838 100%);
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(79, 172, 254, 0.5);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.6);
 }
 
 .pagination {
