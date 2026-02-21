@@ -896,11 +896,11 @@ body {
 .empty-state {
   text-align: center;
   padding: var(--spacing-xl) var(--spacing-md);
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #ffd90f 0%, #00a8e1 100%);
   border-radius: var(--border-radius-lg);
   margin: var(--spacing-md);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 40px var(--shadow-hover);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(255, 217, 15, 0.4);
   position: relative;
   overflow: hidden;
 }

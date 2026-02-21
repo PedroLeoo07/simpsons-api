@@ -72,7 +72,10 @@ export default function Home() {
       </button>
 
       <header className="header">
-        <h1 className="title">The Simpsons API</h1>
+        <div className="header-cloud cloud-1">☁️</div>
+        <div className="header-cloud cloud-2">☁️</div>
+        <div className="header-cloud cloud-3">☁️</div>
+        <h1 className="title">🍩 The Simpsons API 🍩</h1>
         <p className="subtitle">
           Explore personagens, episódios e locações do universo dos Simpsons
         </p>
