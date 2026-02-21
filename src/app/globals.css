@@ -138,8 +138,8 @@ body {
   position: fixed;
   top: var(--spacing-md);
   right: var(--spacing-md);
-  background: var(--card-bg);
-  border: 2px solid var(--border-color);
+  background: linear-gradient(135deg, #ffd90f 0%, #ffbf00 100%);
+  border: 3px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   width: 60px;
   height: 60px;
@@ -149,29 +149,30 @@ body {
   cursor: pointer;
   font-size: 1.5rem;
   transition: var(--transition-bounce);
-  box-shadow: 0 4px 12px var(--shadow-color);
+  box-shadow: 0 4px 20px rgba(255, 217, 15, 0.5);
   z-index: 1000;
   backdrop-filter: blur(10px);
   overflow: hidden;
+  position: relative;
 }
 
 .theme-toggle::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #00a8e1 0%, #74d680 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .theme-toggle:hover::before {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 
 .theme-toggle:hover {
   transform: scale(1.15) rotate(20deg);
-  box-shadow: 0 8px 25px var(--shadow-hover);
-  border-color: var(--primary-color);
+  box-shadow: 0 8px 30px rgba(255, 217, 15, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
 }
 
 .container {
@@ -203,12 +204,14 @@ body {
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, 
-    #ffd90f 0%, 
-    #00a8e1 25%, 
-    #ff6b6b 50%, 
-    #74d680 75%, 
-    #ffd90f 100%);
+  background: linear-gradient(
+    90deg,
+    #ffd90f 0%,
+    #00a8e1 25%,
+    #ff6b6b 50%,
+    #74d680 75%,
+    #ffd90f 100%
+  );
   animation: rainbowSlide 3s linear infinite;
   z-index: 10;
 }
@@ -1161,4 +1164,53 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Footer */
+.footer {
+  background: linear-gradient(135deg, #ffd90f 0%, #00a8e1 100%);
+  padding: var(--spacing-lg) var(--spacing-md);
+  text-align: center;
+  color: white;
+  margin-top: var(--spacing-xl);
+  border-top: 3px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    transparent 100%);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+.footer p {
+  margin: var(--spacing-xs) 0;
+  font-weight: 600;
+  font-size: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.footer-text {
+  font-size: 0.9rem;
+  opacity: 0.9;
 }
